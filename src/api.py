@@ -17,7 +17,7 @@ try:
     df = pd.read_csv(
         csv_path, 
         sep=';', 
-        encoding='latin-1',
+        encoding='utf-8',
         on_bad_lines='skip' 
     )
     print(f"Arquivo '{file_name}' carregado com sucesso com {len(df)} linhas.")
@@ -41,7 +41,7 @@ def get_by_modalidade(modalidade_nome):
         return jsonify({'status': 'error', 'message': 'Dataset não carregado.'}), 500
     
     # ATENÇÃO: Verifique se a coluna 'Modalidade' existe no seu CSV
-    result = df[df['Modalidade'].str.contains(modalidade_nome, case=False)]
+    result = df[df['modalidade'].str.contains(modalidade_nome, case=False)]
     return jsonify(result.to_dict(orient='records'))
 
 # 3. Filtro avançado via JSON
