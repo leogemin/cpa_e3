@@ -31,7 +31,7 @@
 			"response": []
 		},
 		{
-			"name": "Consultar por Modalidade (Pregão)",
+			"name": "Consultar por Modalidade",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -103,7 +103,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"Modalidade\": \"Convite\",\n    \"Objeto\": \"Serviços de jardinagem\",\n    \"Valor\": 25000.00\n}",
+					"raw": "{\n    \"modalidade\": \"Convite\",\n    \"objetoCompra\": \"Serviços de jardinagem\",\n    \"amparoLegal\": \"banana\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
