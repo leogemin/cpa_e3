@@ -1,8 +1,10 @@
 {
 	"info": {
-		"_postman_id": "c7d8e9f0-a1b2-c3d4-e5f6-g7h8i9j0k1l2",
+		"_postman_id": "c806fcb9-a1f8-405d-acc3-739d26af9bcb",
 		"name": "API - Licitações IFPI",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47870003",
+		"_collection_link": "https://gabriel-domingues-s-team.postman.co/workspace/AGES---Conex%25C3%25A3o-e-Treinamento~433ecf3a-744f-4e70-95a8-97a5cf133e23/collection/47870003-c806fcb9-a1f8-405d-acc3-739d26af9bcb?action=share&source=collection_link&creator=47870003"
 	},
 	"item": [
 		{
@@ -59,7 +61,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"Objeto\": \"Aquisição de material de escritório\"\n}",
+					"raw": "{\n    \"modalidade\": \"Pregão - Eletrônico\",\n    \"srp\": \"Sim\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -67,7 +69,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/licitacoes/filter",
+					"raw": "http://127.0.0.1:5000/licitacoes/filter?modalidade=dispensa&srp=sim",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -79,6 +81,16 @@
 					"path": [
 						"licitacoes",
 						"filter"
+					],
+					"query": [
+						{
+							"key": "modalidade",
+							"value": "dispensa"
+						},
+						{
+							"key": "srp",
+							"value": "sim"
+						}
 					]
 				}
 			},
