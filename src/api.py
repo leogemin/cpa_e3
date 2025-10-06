@@ -79,6 +79,7 @@ def add_licitacao():
         return jsonify({'status': 'error', 'message': 'Ocorreu um erro interno no servidor.'}), 500
 
 @app.route('/licitacoes/<int:index>', methods=['PUT'])
+
 def update_licitacao(index):
     global df
     if index in df.index:
