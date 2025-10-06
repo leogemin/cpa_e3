@@ -60,10 +60,33 @@ def advanced_filter():
 
 @app.route('/licitacoes', methods=['POST'])
 def add_licitacao():
-    global df
+    # 1. Tenta pegar o JSON. Se não for um JSON válido, retorna erro.
     new_data = request.get_json()
-    df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
-    return jsonify({'status': 'success', 'message': 'Licitação adicionada.'}), 201
+    if not new_data:
+        return jsonify({'status': 'error', 'message': 'Corpo da requisição está vazio ou não é um JSON válido.'}), 400
+
+    # 2. Validação: Verifica se os campos que consideramos essenciais estão presentes.
+    #    Vamos assumir que 'modalidade' e 'objetoCompra' são obrigatórios.
+    required_fields = ['modalidade', 'objetoCompra']
+    if not all(field in new_data for field in required_fields):
+        return jsonify({
+            'status': 'error',
+            'message': f'Dados incompletos. Campos obrigatórios ausentes. É necessário ter: {required_fields}'
+        }), 400
+
+    # 3. Se passou em todas as validações, tenta adicionar ao DataFrame.
+    try:
+        global df
+        df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
+        
+        # Se tudo der certo, retorna sucesso.
+        return jsonify({'status': 'success', 'message': 'Licitação adicionada.'}), 201
+
+    # 4. Se ocorrer um erro inesperado ao manipular os dados, retorna um erro de servidor.
+    except Exception as e:
+        # Imprime o erro no terminal do servidor para o desenvolvedor ver
+        print(f"ERRO INTERNO AO ADICIONAR DADOS: {e}")
+        return jsonify({'status': 'error', 'message': 'Ocorreu um erro interno no servidor.'}), 500
 
 @app.route('/licitacoes/<int:index>', methods=['PUT'])
 def update_licitacao(index):
