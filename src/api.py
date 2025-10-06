@@ -90,13 +90,45 @@ def update_licitacao(index):
         return jsonify({'status': 'success', 'message': 'Licitação atualizada.'})
     return jsonify({'status': 'error', 'message': 'Índice não encontrado.'}), 404
 
-@app.route('/licitacoes/<int:index>', methods=['DELETE'])
-def delete_licitacao(index):
+# Esta única função substitui as duas anteriores (DELETE e PUT)
+@app.route('/licitacoes/<int:index>', methods=['DELETE', 'PUT'])
+def manipulate_licitacao_by_index(index):
     global df
-    if index in df.index:
-        df = df.drop(index).reset_index(drop=True)
-        return jsonify({'status': 'success', 'message': 'Licitação deletada.'})
-    return jsonify({'status': 'error', 'message': 'Índice não encontrado.'}), 404
+
+    # 1. Validação de robustez: Checa se o índice é negativo.
+    # Um índice nunca pode ser negativo, então é uma requisição inválida (Erro 400).
+    if index < 0:
+        return jsonify({'status': 'error', 'message': 'Índice inválido. O índice não pode ser negativo.'}), 400
+
+    # 2. Validação de existência: Checa se o índice existe no DataFrame.
+    # Se não existe, o recurso não foi encontrado (Erro 404).
+    if index not in df.index:
+        return jsonify({'status': 'error', 'message': f'Índice {index} não encontrado.'}), 404
+
+    # --- Lógica para o método DELETE ---
+    if request.method == 'DELETE':
+        try:
+            df = df.drop(index).reset_index(drop=True)
+            return jsonify({'status': 'success', 'message': f'Licitação no índice {index} foi deletada.'})
+        except Exception as e:
+            print(f"ERRO INTERNO AO DELETAR: {e}")
+            return jsonify({'status': 'error', 'message': 'Ocorreu um erro interno no servidor ao deletar.'}), 500
+    
+    # --- Lógica para o método PUT (Atualização) ---
+    if request.method == 'PUT':
+        try:
+            update_data = request.get_json()
+            if not update_data:
+                return jsonify({'status': 'error', 'message': 'Corpo da requisição está vazio ou não é um JSON válido.'}), 400
+
+            for field, value in update_data.items():
+                if field in df.columns:
+                    df.loc[index, field] = value
+            
+            return jsonify({'status': 'success', 'message': f'Licitação no índice {index} foi atualizada.'})
+        except Exception as e:
+            print(f"ERRO INTERNO AO ATUALIZAR: {e}")
+            return jsonify({'status': 'error', 'message': 'Ocorreu um erro interno no servidor ao atualizar.'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
