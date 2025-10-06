@@ -35,7 +35,6 @@ def get_first_n(n):
     return jsonify(df.head(n).to_dict(orient='records'))
 
 # 2. Filtrar por uma coluna específica (Exemplo: Modalidade da licitação)
-# Troque 'Modalidade' pelo nome real da coluna se for diferente
 @app.route('/licitacoes/modalidade/<string:modalidade_nome>', methods=['GET'])
 def get_by_modalidade(modalidade_nome):
     if df.empty:
@@ -86,3 +85,4 @@ def delete_licitacao(index):
     return jsonify({'status': 'error', 'message': 'Índice não encontrado.'}), 404
 
 if __name__ == '__main__':
+    app.run(debug=True)
