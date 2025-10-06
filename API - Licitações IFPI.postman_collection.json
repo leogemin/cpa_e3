@@ -128,7 +128,7 @@
 			"response": []
 		},
 		{
-			"name": "Atualizar licitação (índice 1)",
+			"name": "Atualizar licitação",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -160,7 +160,7 @@
 			"response": []
 		},
 		{
-			"name": "Deletar licitação (índice 0)",
+			"name": "Deletar licitação",
 			"request": {
 				"method": "DELETE",
 				"header": [],
