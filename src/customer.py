@@ -5,10 +5,9 @@ def main():
     """Função principal que executa todos os testes da API."""
     BASE_URL = 'http://127.0.0.1:5000'
 
-    print("--- INICIANDO TESTES NO CLIENTE ---")
+    print("--- INICIANDO TESTES ---")
 
-    # 1. Consultando as 5 primeiras licitações
-    print("\n--- Teste 1: Consultando as 5 primeiras licitações ---")
+    # Consultando as 5 primeiras licitações
     try:
         response = requests.get(f"{BASE_URL}/licitacoes/5", timeout=5)
         response.raise_for_status()  # Lança um erro se a requisição falhar (ex: 404, 500)
@@ -16,8 +15,7 @@ def main():
     except requests.exceptions.RequestException as e:
         print(f"ERRO na requisição: {e}")
 
-    # 2. Filtrando por modalidade = 'Pregão'
-    print("\n--- Teste 2: Buscando licitações da modalidade 'Pregão' ---")
+    # Filtrando por modalidade = 'Pregão'
     try:
         response = requests.get(f"{BASE_URL}/licitacoes/modalidade/Pregão", timeout=5)
         response.raise_for_status()
@@ -25,10 +23,9 @@ def main():
     except requests.exceptions.RequestException as e:
         print(f"ERRO na requisição: {e}")
 
-    # 3. Adicionando uma nova licitação (com colunas de exemplo)
-    print("\n--- Teste 3: Adicionando uma nova licitação (exemplo) ---")
+    # Adicionando uma nova licitação
     try:
-        # Dicionário com os nomes de coluna CORRETOS (minúsculos)
+        # Dicionário com os nomes de coluna
         nova_licitacao = {
             "modalidade": "Convite",
             "objetoCompra": "Aquisição de material de escritório para o IFPI"
@@ -43,6 +40,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # Este bloco garante que a função main() só será executada
-    # quando o script for rodado diretamente.
     main()

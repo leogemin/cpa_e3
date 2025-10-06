@@ -4,7 +4,6 @@ import os
 
 app = Flask(__name__)
 
-# --- CARREGAMENTO DOS DADOS ---
 try:
     # Nome do novo arquivo de dados
     file_name = 'ifpi-administracao-licitacoes-set2025.csv'
@@ -21,30 +20,26 @@ try:
         on_bad_lines='skip' 
     )
     print(f"Arquivo '{file_name}' carregado com sucesso com {len(df)} linhas.")
-    print("Colunas disponíveis:", df.columns.tolist())
 
 except FileNotFoundError:
-    print(f"ERRO: O arquivo '{file_name}' não foi encontrado na pasta 'src'. Certifique-se de que ele está lá.")
+    print(f"ERRO: O arquivo '{file_name}' não foi encontrado na pasta 'src'.")
     df = pd.DataFrame()
 
-# --- Endpoints da API de Licitações ---
-
-# 1. Retornar as N primeiras licitações
+# Retornar as N primeiras licitações
 @app.route('/licitacoes/<int:n>', methods=['GET'])
 def get_first_n(n):
     return jsonify(df.head(n).to_dict(orient='records'))
 
-# 2. Filtrar por uma coluna específica (Exemplo: Modalidade da licitação)
+# Filtrar por uma coluna específica (Ex: Modalidade da licitação)
 @app.route('/licitacoes/modalidade/<string:modalidade_nome>', methods=['GET'])
 def get_by_modalidade(modalidade_nome):
     if df.empty:
         return jsonify({'status': 'error', 'message': 'Dataset não carregado.'}), 500
     
-    # ATENÇÃO: Verifique se a coluna 'Modalidade' existe no seu CSV
     result = df[df['modalidade'].str.contains(modalidade_nome, case=False)]
     return jsonify(result.to_dict(orient='records'))
 
-# 3. Filtro avançado via JSON
+# Filtro avançado
 @app.route('/licitacoes/filter', methods=['POST'])
 def advanced_filter():
     if df.empty:
@@ -56,17 +51,15 @@ def advanced_filter():
             result = result[result[field].astype(str).str.lower() == str(value).lower()]
     return jsonify(result.to_dict(orient='records'))
 
-# --- Endpoints de Inserção, Atualização e Deleção (CRUD) ---
-
+# Adicionar uma nova licitação
 @app.route('/licitacoes', methods=['POST'])
 def add_licitacao():
-    # 1. Tenta pegar o JSON. Se não for um JSON válido, retorna erro.
+    # Tenta pegar o JSON. Se não for válido, retorna erro.
     new_data = request.get_json()
     if not new_data:
         return jsonify({'status': 'error', 'message': 'Corpo da requisição está vazio ou não é um JSON válido.'}), 400
 
-    # 2. Validação: Verifica se os campos que consideramos essenciais estão presentes.
-    #    Vamos assumir que 'modalidade' e 'objetoCompra' são obrigatórios.
+    # Verifica se os campos que consideramos essenciais estão presentes.
     required_fields = ['modalidade', 'objetoCompra']
     if not all(field in new_data for field in required_fields):
         return jsonify({
@@ -74,18 +67,15 @@ def add_licitacao():
             'message': f'Dados incompletos. Campos obrigatórios ausentes. É necessário ter: {required_fields}'
         }), 400
 
-    # 3. Se passou em todas as validações, tenta adicionar ao DataFrame.
+    # Tenta adicionar ao DataFrame.
     try:
         global df
         df = pd.concat([df, pd.DataFrame([new_data])], ignore_index=True)
-        
-        # Se tudo der certo, retorna sucesso.
+
+        # Retorna sucesso.
         return jsonify({'status': 'success', 'message': 'Licitação adicionada.'}), 201
 
-    # 4. Se ocorrer um erro inesperado ao manipular os dados, retorna um erro de servidor.
     except Exception as e:
-        # Imprime o erro no terminal do servidor para o desenvolvedor ver
-        print(f"ERRO INTERNO AO ADICIONAR DADOS: {e}")
         return jsonify({'status': 'error', 'message': 'Ocorreu um erro interno no servidor.'}), 500
 
 @app.route('/licitacoes/<int:index>', methods=['PUT'])
