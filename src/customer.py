@@ -19,7 +19,7 @@ print("\n--- Adicionando uma nova licitação (exemplo) ---")
 # ATENÇÃO: Adapte as chaves ('Modalidade', 'Objeto') para colunas que existam no seu CSV
 nova_licitacao = {
     "modalidade": "Convite",
-    "objeto": "Aquisição de material de escritório",
+    "objetoCompra": "Aquisição de material de escritório",
     "Valor": 15000.00
 }
 response = requests.post(f"{BASE_URL}/licitacoes", json=nova_licitacao)
