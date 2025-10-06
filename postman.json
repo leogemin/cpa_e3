@@ -1,0 +1,174 @@
+{
+	"info": {
+		"_postman_id": "c7d8e9f0-a1b2-c3d4-e5f6-g7h8i9j0k1l2",
+		"name": "API - Licitações IFPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Consultar 5 primeiras licitações",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/licitacoes/5",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"licitacoes",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar por Modalidade (Pregão)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/licitacoes/modalidade/Pregão",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"licitacoes",
+						"modalidade",
+						"Pregão"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtro avançado",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Objeto\": \"Aquisição de material de escritório\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/licitacoes/filter",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"licitacoes",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adicionar nova licitação",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Modalidade\": \"Convite\",\n    \"Objeto\": \"Serviços de jardinagem\",\n    \"Valor\": 25000.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/licitacoes",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"licitacoes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar licitação (índice 1)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Valor\": 30000.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/licitacoes/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"licitacoes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar licitação (índice 0)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/licitacoes/0",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"licitacoes",
+						"0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
