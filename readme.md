@@ -91,7 +91,7 @@ Permite filtrar os dados com base em múltiplos critérios enviados no corpo da 
 -   **Exemplo de uso (curl):**
     ```bash
     curl -X POST -H "Content-Type: application/json" \
-      -d '''{"modalidade": "PREGÃO ELETRÔNICO", "uasg_nome": "IFPI/CAMPUS PARNAIBA"}''' \
+      -d '''{"modalidade": "Pregão - Eletrônico", "uasg_nome": "IFPI/CAMPUS PARNAIBA"}''' \
       http://127.0.0.1:5000/licitacoes/filter
     ```
 
