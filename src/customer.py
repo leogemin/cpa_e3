@@ -47,7 +47,7 @@ def main():
         response_post.raise_for_status()
         print(response_post.json())
 
-        # Atualizando a licitação recém-criada (PUT)
+        # Atualizando a licitação (PUT)
         print(f"\n--- PUT /licitacoes/{index_alvo} ---")
         response_put = requests.put(f"{BASE_URL}/licitacoes/{index_alvo}", json=dados_para_atualizar, timeout=5)
         response_put.raise_for_status()
