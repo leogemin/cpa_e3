@@ -90,22 +90,20 @@ def update_licitacao(index):
         return jsonify({'status': 'success', 'message': 'Licitação atualizada.'})
     return jsonify({'status': 'error', 'message': 'Índice não encontrado.'}), 404
 
-# Esta única função substitui as duas anteriores (DELETE e PUT)
+# Junta as operações PUT e DELETE
 @app.route('/licitacoes/<int:index>', methods=['DELETE', 'PUT'])
 def manipulate_licitacao_by_index(index):
     global df
 
-    # 1. Validação de robustez: Checa se o índice é negativo.
-    # Um índice nunca pode ser negativo, então é uma requisição inválida (Erro 400).
+    # Checa se o índice é negativo
     if index < 0:
         return jsonify({'status': 'error', 'message': 'Índice inválido. O índice não pode ser negativo.'}), 400
 
-    # 2. Validação de existência: Checa se o índice existe no DataFrame.
-    # Se não existe, o recurso não foi encontrado (Erro 404).
+    # Checa se o índice existe no DataFrame.
     if index not in df.index:
         return jsonify({'status': 'error', 'message': f'Índice {index} não encontrado.'}), 404
 
-    # --- Lógica para o método DELETE ---
+    # DELETE
     if request.method == 'DELETE':
         try:
             df = df.drop(index).reset_index(drop=True)
@@ -114,7 +112,7 @@ def manipulate_licitacao_by_index(index):
             print(f"ERRO INTERNO AO DELETAR: {e}")
             return jsonify({'status': 'error', 'message': 'Ocorreu um erro interno no servidor ao deletar.'}), 500
     
-    # --- Lógica para o método PUT (Atualização) ---
+    # PUT
     if request.method == 'PUT':
         try:
             update_data = request.get_json()
