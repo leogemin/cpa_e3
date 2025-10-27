@@ -19,7 +19,6 @@ try:
         encoding='utf-8',
         on_bad_lines='skip' 
     )
-    print(f"Arquivo '{file_name}' carregado com sucesso com {len(df)} linhas.")
 
 except FileNotFoundError:
     print(f"ERRO: O arquivo '{file_name}' não foi encontrado na pasta 'src'.")
@@ -45,10 +44,10 @@ def advanced_filter():
     if df.empty:
         return jsonify({'status': 'error', 'message': 'Dataset não carregado.'}), 500
     filters = request.get_json()
-    result = df.copy()
-    for field, value in filters.items():
-        if field in result.columns:
-            result = result[result[field].astype(str).str.lower() == str(value).lower()]
+    result = df.copy() # Copia do DataFrame original para poder filtrar
+    for field, value in filters.items(): # para cada par chave valor no JSON
+        if field in result.columns: # verifica se a coluna existe
+            result = result[result[field].astype(str).str.lower() == str(value).lower()] # mantém apenas as linhas que correspondem ao filtro
     return jsonify(result.to_dict(orient='records'))
 
 # Adicionar uma nova licitação
@@ -84,9 +83,9 @@ def update_licitacao(index):
     global df
     if index in df.index:
         updated_data = request.get_json()
-        for field, value in updated_data.items():
-            if field in df.columns:
-                df.loc[index, field] = value
+        for field, value in updated_data.items(): # para cada par chave-valor no JSON
+            if field in df.columns: # verifica se a coluna existe
+                df.loc[index, field] = value # atualiza o valor na linha e coluna correspondentes
         return jsonify({'status': 'success', 'message': 'Licitação atualizada.'})
     return jsonify({'status': 'error', 'message': 'Índice não encontrado.'}), 404
 
@@ -106,7 +105,7 @@ def manipulate_licitacao_by_index(index):
     # DELETE
     if request.method == 'DELETE':
         try:
-            df = df.drop(index).reset_index(drop=True)
+            df = df.drop(index).reset_index(drop=True) 
             return jsonify({'status': 'success', 'message': f'Licitação no índice {index} foi deletada.'})
         except Exception as e:
             print(f"ERRO INTERNO AO DELETAR: {e}")
@@ -119,9 +118,9 @@ def manipulate_licitacao_by_index(index):
             if not update_data:
                 return jsonify({'status': 'error', 'message': 'Corpo da requisição está vazio ou não é um JSON válido.'}), 400
 
-            for field, value in update_data.items():
-                if field in df.columns:
-                    df.loc[index, field] = value
+            for field, value in update_data.items(): # para cada par chave-valor no JSON
+                if field in df.columns: # verifica se a coluna existe
+                    df.loc[index, field] = value # atualiza o valor na linha e coluna correspondentes
             
             return jsonify({'status': 'success', 'message': f'Licitação no índice {index} foi atualizada.'})
         except Exception as e:
